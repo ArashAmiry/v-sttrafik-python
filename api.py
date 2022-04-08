@@ -3,7 +3,8 @@ import json
 import requests
 from global_url import *
 
-def fetch_token(key,secret):
+
+def fetch_token(key, secret):
     # Every client using the api needs to pass a valid authentication key in every request.
     # How to generate token: https://developer.vasttrafik.se/portal/#/guides/oauth2
 
@@ -21,6 +22,7 @@ def fetch_token(key,secret):
     # decode data to readable dictionary
     serverData = json.loads(serverData.content.decode('UTF-8'))
     return serverData["access_token"]
+
 
 class API:
 
@@ -48,5 +50,24 @@ class API:
 
         response = requests.get(url, headers=headers)
         response = json.loads(response.content.decode('UTF-8'))
+        print(url)
         return response
 
+    def calculate_trip(self, originCoordLat, originCoordLong, originStreetName, destCoordLat, destCoordLong,
+                       destStreetName, date, arrivalTime):
+        location = "trip"
+
+        querys = {
+            "originCoordLat": originCoordLat,
+            "originCoordLong": originCoordLong,
+            "originCoordName": originStreetName,
+            "destCoordLat": destCoordLat,
+            "destCoordLong": destCoordLong,
+            "destCoordName": destStreetName,
+            "date": date,
+            "time": arrivalTime,
+            "searchForArrival": "1"
+        }
+
+        response = self.requestHTTP(location, querys)
+        return response
