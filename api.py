@@ -50,7 +50,7 @@ class API:
 
         response = requests.get(url, headers=headers)
         response = json.loads(response.content.decode('UTF-8'))
-        print(url)
+
         return response
 
     def calculate_trip(self, originCoordLat, originCoordLong, originStreetName, destCoordLat, destCoordLong,
@@ -66,7 +66,8 @@ class API:
             "destCoordName": destStreetName,
             "date": date,
             "time": arrivalTime,
-            "searchForArrival": "1"
+            "searchForArrival": "1",
+            "numTrips": "1"
         }
 
         response = self.requestHTTP(location, querys)
