@@ -53,7 +53,7 @@ class API:
 
         return response
 
-    def calculate_trip(self, originCoordLat, originCoordLong, originStreetName, destCoordLat, destCoordLong,
+    def calculate_trip_data(self, originCoordLat, originCoordLong, originStreetName, destCoordLat, destCoordLong,
                        destStreetName, date, arrivalTime):
         location = "trip"
 
@@ -73,13 +73,29 @@ class API:
         response = self.requestHTTP(location, querys)
         return response
 
-    def getDifferenceInMinutes(self, lectureStart:str, busArrival:str):
+    def __getDifferenceInMinutes(self, lectureStart: str, busArrival: str):
         lectureTime = lectureStart.split(":")
-        busArrivalTime =busArrival.split(":")
+        busArrivalTime = busArrival.split(":")
         self.__convertStringListToIntList(lectureTime)
         self.__convertStringListToIntList(busArrivalTime)
-        return busArrivalTime
+
+        lectureTimeMinutes = self.__convertTimeToMinutes(lectureTime)
+        busArrivalTimeMinutes = self.__convertTimeToMinutes(busArrivalTime)
+
+        return abs(lectureTimeMinutes - busArrivalTimeMinutes)
+
+    def __convertTimeToMinutes(self, time):
+        minutes = time[0] * 60 + time[1]
+        return minutes
 
     def __convertStringListToIntList(self, listOfStringInt):
         for i in range(0, len(listOfStringInt)):
             listOfStringInt[i] = int(listOfStringInt[i])
+
+        return listOfStringInt
+
+    def getBusTimeIndex(self, lectureTime, lateBusArrival):
+        if self.__getDifferenceInMinutes(lectureTime, lateBusArrival) < 10:
+            return 0
+        else:
+            return 1
