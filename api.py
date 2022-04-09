@@ -67,8 +67,19 @@ class API:
             "date": date,
             "time": arrivalTime,
             "searchForArrival": "1",
-            "numTrips": "1"
+            "numTrips": "2"
         }
 
         response = self.requestHTTP(location, querys)
         return response
+
+    def getDifferenceInMinutes(self, lectureStart:str, busArrival:str):
+        lectureTime = lectureStart.split(":")
+        busArrivalTime =busArrival.split(":")
+        self.__convertStringListToIntList(lectureTime)
+        self.__convertStringListToIntList(busArrivalTime)
+        return busArrivalTime
+
+    def __convertStringListToIntList(self, listOfStringInt):
+        for i in range(0, len(listOfStringInt)):
+            listOfStringInt[i] = int(listOfStringInt[i])
